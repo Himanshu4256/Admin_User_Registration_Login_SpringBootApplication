@@ -26,6 +26,5 @@ public class CustomUserDetailsService implements UserDetailsService{
 		else {
 			return new CustomUser(user); //If Id exist then return the CustomUser object with user details.
 		}
-		
 	}
 }

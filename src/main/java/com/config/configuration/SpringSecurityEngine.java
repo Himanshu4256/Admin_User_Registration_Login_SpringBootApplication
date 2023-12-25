@@ -5,12 +5,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
@@ -20,78 +22,39 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 public class SpringSecurityEngine implements WebMvcConfigurer{
 	
 	@Autowired
-	public CustomAuthSuccessHandler authSuccessHandler;
+	public CustomAuthSuccessHandler customAuthSuccessHandler;
+	
+	@Autowired
+	CustomUserDetailsService customUserDetailsService;
 	
 	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+	public static BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
-	}
-	
-	@Bean
-	public UserDetailsService getDetailsService() {
-		return new CustomUserDetailsService();
-	}
-	
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(getDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-		return daoAuthenticationProvider;
-	}
-	
-	@Bean
-	MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-		return new MvcRequestMatcher.Builder(introspector).servletPath("/spring-mvc");
-	}
+	}  
+
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-//		http.csrf().disable().authorizeHttpRequests()
-//		.requestMatchers("/").permitAll().anyRequest().authenticated();
-//		return http.build();	
-        
-//		http.authorizeHttpRequests ((requests) ->
-//		requests.requestMatchers (new AntPathRequestMatcher("/")).permitAll()
-//		.anyRequest().authenticated())
-//		
-//		.csrf(csrf -> csrf.disable())
-//		.httpBasic(withDefaults()); 
-//		return http.build();
-        
-        
-//			http
-//				.authorizeHttpRequests((authorize) -> authorize
-//					.requestMatchers("/endpoint").hasAuthority("USER")
-//					.anyRequest().authenticated()
-//				)
-//				.csrf(csrf -> csrf.disable())
-//				.httpBasic(withDefaults());
-//
-//			return http.build();
-        
-        
-//		http.authorizeHttpRequests((requests) ->
-//	    requests
-//	        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
-//	        .requestMatchers(new AntPathRequestMatcher("/logins")).permitAll()
-//	        .requestMatchers(new AntPathRequestMatcher("/userDetails")).permitAll()
-//	        .requestMatchers("/adminPortal").hasRole("ADMIN")
-//	        .anyRequest().authenticated())
-//	    .csrf(csrf -> csrf.disable())
-//	    .httpBasic(withDefaults()); 
-//	return http.build();
-        
-        
-        
-        http.csrf().disable()
-        .authorizeHttpRequests().requestMatchers("/user/**").hasRole("USER")
-        .requestMatchers("/admin/**").hasRole("ADMIN")
-        .requestMatchers("/").permitAll().and()
-        .formLogin().loginPage("/login").loginProcessingUrl("/userLogin")
-        .successHandler(authSuccessHandler)
-        .permitAll();
-        return http.build();
+			http.csrf(c -> c.disable())
+			.authorizeHttpRequests(request -> request.requestMatchers("/admin")
+					.hasAuthority("ADMIN").requestMatchers("/user").hasAuthority("USER")
+					.requestMatchers("/registration").permitAll().requestMatchers("/").permitAll()					
+					.anyRequest().authenticated())
+			
+			.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
+					.successHandler(customAuthSuccessHandler).permitAll())
+			
+			.logout(form -> form.invalidateHttpSession(true).clearAuthentication(true)
+					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+					.logoutSuccessUrl("/login?logout").permitAll());
+			
+			return http.build();
+		
+	}
+	
+	@Autowired
+	public void configure (AuthenticationManagerBuilder auth) throws Exception{
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 }

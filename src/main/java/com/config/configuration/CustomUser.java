@@ -2,6 +2,7 @@ package com.config.configuration;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,8 +23,7 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());  // get role with the help of SimpleGrantedAuthority
-		return Arrays.asList(authority); // Convert the role in list. Because return type is Collection
+		return List.of(() -> user.getRole());
 	}
 
 	@Override

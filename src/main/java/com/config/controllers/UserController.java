@@ -1,9 +1,14 @@
-package com.config.controllers;
+ package com.config.controllers;
+
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +27,9 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+	
+	@Autowired
+	UserDetailsService userDetailsService;
 
 	@Autowired
 	private UserService userService;
@@ -53,7 +61,12 @@ public class UserController {
 	}
 	
 	@GetMapping("/userProfile")
-	public String profile() {
+	public String profile(Model model, Principal principal) {
+		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
+		model.addAttribute("user", userDetails);
+		
 		return "UserProfile";
 	}
+	
+	
 }

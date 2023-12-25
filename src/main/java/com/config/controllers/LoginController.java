@@ -28,16 +28,16 @@ public class LoginController {
 		return "Login";
 	}
 
-//	@PostMapping("/logins")
-//	public String loginUser(@RequestParam("userName") String userName, @RequestParam("password") String plainPassword,User users) {
-//		User user = loginService.login(userName, plainPassword);
-//		
-//		if (user != null) {
-//			// Successful login
-//			return "AdminDashboard";
-//		} else {
-//			System.out.println("hello Login failed");
-//			return "Login";
-//		}
-//	}
+	@PostMapping("/login")
+	public String loginUser(@RequestParam("userName") String userName, @RequestParam("password") String plainPassword,User users) {
+		User user = loginService.login(userName, plainPassword);
+		
+		if (user != null) {
+			// Successful login
+			return "AdminDashboard";
+		} else {
+			System.out.println("hello Login failed");
+			return "Login";
+		}
+	}
 }
