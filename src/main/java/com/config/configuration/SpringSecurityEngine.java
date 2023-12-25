@@ -50,7 +50,6 @@ public class SpringSecurityEngine implements WebMvcConfigurer{
 					.logoutSuccessUrl("/login?logout").permitAll());
 			
 			return http.build();
-		
 	}
 	
 	@Autowired

@@ -16,8 +16,7 @@
 </head>
 <body>
     <div class="container">
-		
-	    
+	
 	    <div class="message" th:if= "${param.logout}"}>
 			Logout Successfully
 	    </div>
@@ -46,6 +45,22 @@
             </div>
         </div>
     </div>
-    </script>
+     <script>
+    function validateForm() {
+        var userName = document.getElementById("userName").value;
+        var password = document.getElementById("password").value;
+
+        // Add your validation logic here, for example, checking if the fields are empty or have valid values.
+        // For demonstration purposes, let's assume the validation fails.
+        if (userName === "" || password === "") {
+            document.getElementById("error-message").innerHTML = "Invalid login data. Please provide valid username and password.";
+            document.getElementById("error-message").style.display = "block"; // Show the error message
+            return false; // Prevent form submission
+        }
+
+        // If validation succeeds, you can submit the form.
+        return true;
+    }
+</script>
 </body>
 </html>
