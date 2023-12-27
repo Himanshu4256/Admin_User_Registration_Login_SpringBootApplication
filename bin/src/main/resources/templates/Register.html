@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 50%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        input[type="text"], input[type="email"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            background-color: #4caf50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+  <!--<div th:if="${successMsg}" style="color: green;" th:text="${successMsg}"></div><br> -->
+    <div class="message" th:if="${message != null}">
+           [[${message}]]
+        </div>
+    <h2>Registration Form</h2>
+    <form th:action="@{/registration}" method="post" role="form" th:object = "${user}">
+        <label for="userName"></label>
+        <input th:field="*{userName}" type="text" id="userName" name="userName" th:required="required" placeholder="Enter UserName"><br>
+
+        <label for="email"></label>
+        <input  th:field="*{email}" type="email" id="email" name="email" th:required="required" placeholder="Enter Email"><br>
+
+        <label for="password"></label>
+        <input  th:field= "*{password}" type="password" id="password" name="password" th:required="required" placeholder="Enter Password"><br>
+
+        <label for="company"></label>
+        <input th:field= "*{company}" type="text" id="company" name="company" th:required="required" placeholder="Enter Company Name"><br>
+
+        <label for="technology"></label>
+        <input th:field= "*{technology}" type="text" id="technology" name="technology" th:required="required" placeholder="Enter Technology"><br>
+
+        <label for="designation"></label>
+        <input  th:field= "*{designation}" type="text" id="designation" name="designation" th:required="required" placeholder="Enter Designation"><br>
+        
+        <label for="role"></label>
+        <input  th:field= "*{role}" type="text" id="role" name="role" th:required="required" placeholder="Enter Accessibility Role"><br>
+		<input type="submit" value="Register">
+        <!-- <button type="submit">Register</button> -->
+        
+    </form>
+</div>
+</body>
+</html>
