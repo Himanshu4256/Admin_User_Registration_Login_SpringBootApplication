@@ -27,30 +27,52 @@ public class SpringSecurityEngine implements WebMvcConfigurer{
 	@Autowired
 	CustomUserDetailsService customUserDetailsService;
 	
+	@Autowired
+	UserDetailsService userDetailsService;
+	
 	@Bean
 	public static BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}  
+	
+//	@Bean
+//	public DaoAuthenticationProvider daoAuthenticationProvider() {
+//		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+//		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+//		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+//		return daoAuthenticationProvider;
+//	}
 
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
 			http.csrf(c -> c.disable())
-			.authorizeHttpRequests(request -> request.requestMatchers("/admin")
-					.hasAuthority("ADMIN").requestMatchers("/user").hasAuthority("USER")
+			.authorizeHttpRequests(request -> request.requestMatchers("/admin**",
+	                "/js/**",
+	                "/css/**",
+	                "/img/**")
+					.hasAuthority("ADMIN").requestMatchers("/user**",
+			                "/js/**",
+			                "/css/**",
+			                "/img/**").hasAuthority("USER")
 					.requestMatchers("/registration").permitAll().requestMatchers("/").permitAll()					
 					.anyRequest().authenticated())
 			
-			.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
-					.successHandler(customAuthSuccessHandler).permitAll())
+//			.formLogin(form -> form.loginPage("/login").loginProcessingUrl("/login")
+//					.successHandler(customAuthSuccessHandler).permitAll())
+			
+			.formLogin(form -> form
+				    .loginPage("/login")
+				    .loginProcessingUrl("/logins")
+				    .permitAll()
+				)
 			
 			.logout(form -> form.invalidateHttpSession(true).clearAuthentication(true)
 					.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 					.logoutSuccessUrl("/login?logout").permitAll());
 			
 			return http.build();
-		
 	}
 	
 	@Autowired

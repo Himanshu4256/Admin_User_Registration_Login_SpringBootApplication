@@ -20,11 +20,12 @@ public class LoginService {
 	
 	public User login(String uName,String password) {
 		User userDetails =  loginRepository.findByuserName(uName);
+		System.out.println("=============="+userDetails);
 		if(userDetails==null) {
 			throw new UsernameNotFoundException("Your UserName/Password is incorrect ");
 		}
-	
 		return encoder.matches(password, userDetails.getPassword())?
-		 userDetails: null;  // if [password matches the userDetails.getPAssword()] then return user's Details. Otherwise return null;
+		 userDetails: null;
+		
 }
 }

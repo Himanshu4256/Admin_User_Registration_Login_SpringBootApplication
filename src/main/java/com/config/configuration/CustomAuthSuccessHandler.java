@@ -14,7 +14,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
-@Service
 // annotation because of anyone can create object easily
 public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler{
 
@@ -27,11 +26,13 @@ public class CustomAuthSuccessHandler implements AuthenticationSuccessHandler{
 		var authourities = authentication.getAuthorities();
 		var roles = authourities.stream().map(r -> r.getAuthority()).findFirst();
 		
+//		System.err.println(roles);
+		
 		if (roles.orElse("").equals("ROLE_ADMIN")) {
-			response.sendRedirect("/admin");
+			response.sendRedirect("/admin/AdminDashboard");
 		}
 		else if(roles.orElse("").equals("ROLE_USER")) {
-			response.sendRedirect("/user/userProfile");
+			response.sendRedirect("/user/userProfile"); 
 		}else {
 			response.sendRedirect("/error");
 		}
