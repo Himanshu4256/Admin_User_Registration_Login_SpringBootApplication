@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="color: rgb(56, 56, 214); font-size: 1.5em;"><b>Omnie Solutions Pvt Ltd.</b></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/registration}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header Section with Blue Background -->
+    <section class="hero-section text-white text-center py-5" style="background-color: rgb(119, 119, 245);">
+        <div class="container">
+            <h1>Welcome to Omnie Solutions!</h1>
+            <p>where innovation meets excellence and client satisfaction is our top priority."</p>
+        </div>
+    </section>
+
+    <!-- Technologies Section with Bootstrap Cards -->
+    <section class="container my-5">
+        <h2 class="text-center mb-4">Technologies We Work With</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card bg-info text-white text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Bootstrap</h5>
+                        <p class="card-text">A popular front-end framework for building responsive and mobile-first websites.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-success text-white text-center">
+                    <div class="card-body" style="background-color: #90EE90;">
+                        <h5 class="card-title">Spring Boot</h5>
+                        <p class="card-text">An innovative and versatile Java-based framework for building robust and scalable applications.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card bg-warning text-dark text-center">
+                    <div class="card-body" style="background-color:#BBCBBC;">
+                        <h5 class="card-title">React.js</h5>
+                        <p class="card-text">A JavaScript library for building user interfaces, particularly single-page applications.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Company Section -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2>About Our Company</h2>
+            <p th:text="'At ' + ${'Omnie Solutions Pvt Ltd.'} + ', we are dedicated to delivering innovative solutions that transform businesses and enhance user experiences. With a passionate team of experts, we specialize in leveraging cutting-edge technologies such as Bootstrap, Spring Boot, and React.js to create seamless and scalable applications. Our commitment to excellence and client satisfaction drives us to continually push the boundaries of what\'s possible. With years of industry experience, Our mission is to create impactful, user-centric experiences that drive success and foster long-term relationships with our clients.'"></p>
+        </div>
+    </section>
+
+    <!-- Footer Section with Blue Background -->
+    <footer class="footer-section bg-primary text-white text-center py-3">
+        <div class="container">
+            <p th:text="'&copy; ' + ${#dates.format(#now, 'yyyy')} + ' 2023 Omnie Solutions Pvt Ltd. All rights reserved.'"></p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies (Popper.js and jQuery) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

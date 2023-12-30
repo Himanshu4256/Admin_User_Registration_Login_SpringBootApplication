@@ -59,7 +59,7 @@ public class UserController {
 		userService.deleteUserDetails(id);
 		return ResponseEntity.ok("Your User is deleted");
 	}
-	
+//	
 	@GetMapping("/userProfile")
 	public String profile(Model model, Principal principal) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());

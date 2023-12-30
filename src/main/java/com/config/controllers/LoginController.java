@@ -29,15 +29,20 @@ public class LoginController {
 	}
 
 	@PostMapping("/login")
-	public String loginUser(@RequestParam("userName") String userName, @RequestParam("password") String plainPassword,User users) {
+	public String loginUser(@RequestParam("userName") String userName, @RequestParam("password") String plainPassword) {
 		User user = loginService.login(userName, plainPassword);
+		 //System.err.println(">>>>"+user);
 		
-		if (user != null) {
-			// Successful login
-			return "AdminDashboard";
-		} else {
-			System.out.println("hello Login failed");
-			return "Login";
-		}
+		 if (user != null) {
+		        if ("ROLE_ADMIN".equals(user.getRole())) {
+		            // Successful login for admin
+		            return "AdminDashboard";
+		        } else if ("ROLE_USER".equals(user.getRole())) {
+		            // Successful login for user
+		            return "UserProfile";
+		        }
+		    }
+		    System.out.println("Login failed");
+		    return "Login";
 	}
 }
